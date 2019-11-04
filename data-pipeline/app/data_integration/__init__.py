@@ -9,7 +9,7 @@ from mara_app.monkey_patch import patch
 
 import app.config
 
-from bcreg.bcreg_pipelines import bc_reg_root_pipeline
+from corpcan.corpcan_pipelines import corpcan_root_pipeline
 
 patch(data_integration.config.data_dir)(lambda: app.config.data_dir())
 patch(data_integration.config.first_date)(lambda: app.config.first_date())
@@ -20,4 +20,4 @@ patch(data_integration.config.system_statistics_collection_period)(lambda: 15)
 @patch(data_integration.config.root_pipeline)
 @functools.lru_cache(maxsize=None)
 def root_pipeline():
-    return bc_reg_root_pipeline()
+    return corpcan_root_pipeline()
