@@ -4,7 +4,7 @@
 
 # Corporations Canada Verifiable Organization Network Agent
 
-Components for plugging the BC Registries into the verifiable organizations network.
+Components for plugging the Corporations Canada into the verifiable organizations network.
 
 ## Running on OpenShift
 
