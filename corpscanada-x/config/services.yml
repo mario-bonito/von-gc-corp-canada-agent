@@ -3,9 +3,9 @@ issuers:
     details:
       label_en: Corporatations Canada Registry
       abbreviation_en: CorpsCanada
-      url_en: https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/citizens-services/bc-registries-online-services
-      email: bcregistries@gov.bc.ca
-      logo_path: ../assets/img/bcreg-logo-square.jpg
+      url_en: https://www.ic.gc.ca/eic/site/cd-dgc.nsf/eng/home
+      email: IC.corporationscanada.IC@canada.ca
+      logo_path: https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.png
       endpoint: $ENDPOINT_URL
 
     connection:

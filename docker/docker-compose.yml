@@ -3,7 +3,7 @@ services:
 
   caddy:
     build:
-      context: ../corpcan-x
+      context: ../corpscanada-x
       dockerfile: Dockerfile.caddy
     environment:
       TOB_API_URL: ${TOB_API_URL:-}
@@ -14,7 +14,7 @@ services:
       AGENT_HOST: ${AGENT_HOST:-agent}
       AGENT_PORT: ${AGENT_PORT:-8000}
     links:
-      - corpcan-agent:agent
+      - corpscanada-agent:agent
     networks:
       - vonx
     ports:
@@ -23,9 +23,9 @@ services:
       - caddy-data:/root/.caddy
       - caddy-logs:/srv/logs
 
-  corpcan-agent:
+  corpscanada-agent:
     build:
-      context: ../corpcan-x
+      context: ../corpscanada-x
       dockerfile: Dockerfile
     environment:
       APPLICATION_URL: ${APPLICATION_URL:-http://localhost:5000}
@@ -53,14 +53,14 @@ services:
       - orgbook
       - vonx
     depends_on:
-      - gc-wallet-db
+      - corpscanada-wallet-db
     entrypoint: >
       /bin/bash -c "
         echo sleeping ...;
         sleep 15;
         ../docker-entrypoint.sh;"
 
-  corpcanmara:
+  corpscanadamara:
     build:
       context: ../data-pipeline
       dockerfile: docker/mara-app/Dockerfile
@@ -71,21 +71,21 @@ services:
       - WEBHOOK_LEVEL=${WEBHOOK_LEVEL:-0}  # 0=Error, 1=Warning, 2=Info
       - PROJECT_NAME=${PROJECT_NAME:-von-local-developer-agent}
       - FRIENDLY_PROJECT_NAME=${FRIENDLY_PROJECT_NAME:-Local Developer Data Pipeline}
-      - VONX_API_URL=${VONX_API_URL:-http://corpcan-agent:8000/corpcan}
+      - VONX_API_URL=${VONX_API_URL:-http://corpscanada-agent:8000/corpscanada}
       # [gc_registries]
-      - CORPCAN_DB_HOST=${CORPCAN_DB_HOST:-host.docker.internal}
-      - CORPCAN_DB_PORT=${CORPCAN_DB_PORT:-5454}
-      - CORPCAN_DB_DATABASE=${CORPCAN_DB_DATABASE:-CORPORATION_CANADA}
-      - CORPCAN_DB_USER=${CORPCAN_DB_USER}
-      - CORPCAN_DB_PASSWORD=${CORPCAN_DB_PASSWORD}
+      - CORPSCANADA_DB_HOST=${CORPSCANADA_DB_HOST:-host.docker.internal}
+      - CORPSCANADA_DB_PORT=${CORPSCANADA_DB_PORT:-5454}
+      - CORPSCANADA_DB_DATABASE=${CORPSCANADA_DB_DATABASE:-CORPORATION_CANADA}
+      - CORPSCANADA_DB_USER=${CORPSCANADA_DB_USER}
+      - CORPSCANADA_DB_PASSWORD=${CORPSCANADA_DB_PASSWORD}
       # [event_processor]
-      - EVENT_PROC_DB_HOST=${EVENT_PROC_DB_HOST:-corpcandb}
+      - EVENT_PROC_DB_HOST=${EVENT_PROC_DB_HOST:-corpscanadadb}
       - EVENT_PROC_DB_PORT=${EVENT_PROC_DB_PORT:-5432}
-      - EVENT_PROC_DB_DATABASE=${EVENT_PROC_DB_DATABASE:-corpcan_db}
-      - EVENT_PROC_DB_USER=${EVENT_PROC_DB_USER:-corpcan_db}
+      - EVENT_PROC_DB_DATABASE=${EVENT_PROC_DB_DATABASE:-corpscanada_db}
+      - EVENT_PROC_DB_USER=${EVENT_PROC_DB_USER:-corpscanada_db}
       - EVENT_PROC_DB_PASSWORD=
       # [mara_db]
-      - MARA_DB_HOST=${MARA_DB_HOST:-corpcandb}
+      - MARA_DB_HOST=${MARA_DB_HOST:-corpscanadadb}
       - MARA_DB_PORT=${MARA_DB_PORT:-5432}
       - MARA_DB_DATABASE=${MARA_DB_DATABASE:-mara_db}
       - MARA_DB_USER=${MARA_DB_USER:-mara_db}
@@ -100,14 +100,14 @@ services:
     ports:
       - "5050:5000"
     depends_on:
-      - corpcandb
+      - corpscanadadb
     entrypoint: >
       /bin/bash -c "
         echo sleeping ...;
         sleep 5;
         ./docker-entrypoint.sh;"
 
-  corpcandb:
+  corpscanadadb:
     build:
       context: ../data-pipeline
       dockerfile: docker/postgres/Dockerfile
@@ -123,7 +123,7 @@ services:
     volumes:
       - mara-data:/var/lib/pgsql/data
 
-  gc-wallet-db:
+  corpscanada-wallet-db:
     image: registry.access.redhat.com/rhscl/postgresql-95-rhel7:9.5
     environment:
       - POSTGRESQL_USER=${POSTGRESQL_USER}

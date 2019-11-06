@@ -7,7 +7,7 @@ import mara_db.dbs
 import data_integration
 import data_integration.config
 from mara_app.monkey_patch import patch
-from corpscanada.corpcan_pipelines import corpscanada_root_pipeline
+from corpscanada.corpscan_pipelines import corpscanada_root_pipeline
 from corpscanada.rocketchat_hooks import log_error, log_warning, log_info
 
 
@@ -24,7 +24,7 @@ mara_user = os.environ.get('MARA_DB_USER', 'mara_db')
 mara_password = os.environ.get('MARA_DB_PASSWORD')
 
 try:
-    log_info("Starting corpcan_event_processor ...")
+    log_info("Starting corpscanada_event_processor ...")
     mara_db.config.databases \
         = lambda: {'mara': mara_db.dbs.PostgreSQLDB(user=mara_user, password=mara_password, host=mara_host, database=mara_database, port=mara_port)}
 

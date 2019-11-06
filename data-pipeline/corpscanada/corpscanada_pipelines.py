@@ -25,7 +25,7 @@ def corpscanada_root_pipeline():
         id = 'test_and_demo_tasks',
         description = 'Holder for test and demo tasks.')
 
-    test_pipeline.add(bc_init_test_data())
+    test_pipeline.add(corpscanada_init_test_data())
     test_pipeline.add(corpscanada_test_corps())
     test_pipeline.add(corpscanada_pipeline_single_thread())
     test_pipeline.add(corpscanada_pipeline_jsonbender())
