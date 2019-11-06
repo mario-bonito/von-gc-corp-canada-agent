@@ -39,18 +39,18 @@ def corpscanada_pipeline():
 
     pipeline1 = Pipeline(
         id='corpscanada_event_processor',
-        description='A pipeline that processes BC Registries events and generates credentials.')
+        description='A pipeline that processes Corporations Canada events and generates credentials.')
 
-    sub_pipeline1_2 = Pipeline(id='load_and_process_corpscanada_data', description='Load BC Reg data and generate credentials')
+    sub_pipeline1_2 = Pipeline(id='load_and_process_corpscanada_data', description='Load Corporations Canada data and generate credentials')
     sub_pipeline1_2.add(Task(id='register_un_processed_events', description='Register un-processed events',
                           commands=[ExecutePython('./corpscanada/find-unprocessed-events.py')]))
-    sub_pipeline1_2.add(Task(id='load_corpscanada_data', description='Load BC Registries data',
+    sub_pipeline1_2.add(Task(id='load_corpscanada_data', description='Load Corporations Canada data',
                           commands=[ExecutePython('./corpscanada/process-corps-generate-creds.py')]), ['register_un_processed_events'])
     sub_pipeline1_2.add(Task(id='create_corpscanada_credentials', description='Create credentials',
                           commands=[ExecutePython('./corpscanada/generate-creds.py')]), ['load_corpscanada_data'])
     pipeline1.add(sub_pipeline1_2)
 
-    sub_pipeline1_3 = Pipeline(id='submit_corpscanada_credentials', description='Submit BC Reg credentials to P-X')
+    sub_pipeline1_3 = Pipeline(id='submit_corpscanada_credentials', description='Submit Corporations Canada credentials to P-X')
     sub_pipeline1_3.add(Task(id='submit_credentials', description='Submit credentials',
                           commands=[ExecutePython('./corpscanada/submit-creds.py')]))
     pipeline1.add(sub_pipeline1_3, ['load_and_process_corpscanada_data'])
@@ -67,16 +67,16 @@ def corpscanada_pipeline_single_thread():
 
     pipeline1 = Pipeline(
         id='corpscanada_event_processor_single_thread',
-        description='A pipeline that processes BC Registries events and generates credentials.')
+        description='A pipeline that processes Corporations Canada events and generates credentials.')
 
-    sub_pipeline1_2 = Pipeline(id='load_and_process_corpscanada_data_single_thread', description='Load BC Reg data and generate credentials')
+    sub_pipeline1_2 = Pipeline(id='load_and_process_corpscanada_data_single_thread', description='Load Corporations Canada data and generate credentials')
     sub_pipeline1_2.add(Task(id='register_un_processed_events_single_thread', description='Register un-processed events',
                           commands=[ExecutePython('./corpscanada/find-unprocessed-events.py')]))
-    sub_pipeline1_2.add(Task(id='load_corpscanada_data_single_thread', description='Load BC Registries data',
+    sub_pipeline1_2.add(Task(id='load_corpscanada_data_single_thread', description='Load Corporations Canada data',
                           commands=[ExecutePython('./corpscanada/register_un_processed_events')]), ['register_un_processed_events_single_thread'])
     pipeline1.add(sub_pipeline1_2)
 
-    sub_pipeline1_3 = Pipeline(id='submit_corpscanada_credentials_single_thread', description='Submit BC Reg credentials to P-X')
+    sub_pipeline1_3 = Pipeline(id='submit_corpscanada_credentials_single_thread', description='Submit Corporations Canada credentials to P-X')
     sub_pipeline1_3.add(Task(id='submit_credentials_single_thread', description='Submit credentials',
                           commands=[ExecutePython('./corpscanada/submit-creds-single-thread.py')]))
     pipeline1.add(sub_pipeline1_3, ['load_and_process_corpscanada_data_single_thread'])
@@ -90,10 +90,10 @@ def corpscanada_pipeline_initial_load():
         id='corpscanada_corp_loader',
         description='A pipeline that does the initial data load and credentials for all corporations.')
 
-    sub_pipeline1_2 = Pipeline(id='load_and_process_corpscanada_corps', description='Load Active BC Reg corps and generate credentials')
+    sub_pipeline1_2 = Pipeline(id='load_and_process_corpscanada_corps', description='Load Active Corporations Canada corps and generate credentials')
     sub_pipeline1_2.add(Task(id='register_un_processed_corps', description='Register un-processed active corps',
                           commands=[ExecutePython('./corpscanada/find-unprocessed-corps_actve.py')]))
-    sub_pipeline1_2.add(Task(id='load_corpscanada_data_a', description='Load BC Registries data',
+    sub_pipeline1_2.add(Task(id='load_corpscanada_data_a', description='Load Corporations Canada data',
                           commands=[ExecutePython('./corpscanada/process-corps-generate-creds.py')]), ['register_un_processed_corps'])
     pipeline1.add(sub_pipeline1_2)
 
@@ -106,7 +106,7 @@ def corpscanada_pipeline_post_credentials():
         id='corpscanada_credential_poster',
         description='A pipeline that posts generated credentials to TOB.')
 
-    sub_pipeline1_3 = Pipeline(id='submit_corpscanada_credentials_a', description='Submit BC Reg credentials to P-X')
+    sub_pipeline1_3 = Pipeline(id='submit_corpscanada_credentials_a', description='Submit Corporations Canada credentials to P-X')
     sub_pipeline1_3.add(Task(id='submit_credentials_a', description='Submit credentials',
                           commands=[ExecutePython('./corpscanada/submit-creds.py')]))
     pipeline1.add(sub_pipeline1_3)
@@ -140,7 +140,7 @@ def db_init_pipeline():
 
     pipeline = Pipeline(
       id = 'corpscanada_db_init',
-      description = 'Initialize BC Registries Event Processor database')
+      description = 'Initialize Corporations Canada Event Processor database')
 
     pipeline.add(Task(id='create_tables', description='Create event processing tables',
                         commands=[ExecutePython('./corpscanada/create.py')]))

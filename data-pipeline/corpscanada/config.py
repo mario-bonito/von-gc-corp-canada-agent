@@ -4,7 +4,7 @@ import os
 
 def config(filename='database.ini', section='postgresql'):
     db = {}
-    if section == 'corpscanadaregistries':
+    if section == 'corporations_canada':
         db['host'] = os.environ.get('CORPSCANADA_REG_DB_HOST', 'localhost')
         db['port'] = os.environ.get('CORPSCANADA_REG_DB_PORT', '5454')
         db['database'] = os.environ.get('CORPSCANADA_REG_DB_DATABASE', 'CORPORATION_CANADA')

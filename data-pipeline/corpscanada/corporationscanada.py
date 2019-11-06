@@ -84,7 +84,7 @@ def is_data_conversion_event(event):
     return False
 
 
-# interface to BC Registries database
+# interface to Corporations Canada database
 # data is returned as dictionaries, using the sql column name as identifier
 class CorporationsCanada:
     sql_local_cache = False
@@ -615,7 +615,7 @@ class CorporationsCanada:
                 address_where = 'addr_id in (' + addr_list + ')'
                 _rows = self.get_corpscanada_table(self.other_tables[5], address_where, '', True, generate_individual_sql)
 
-    # load all bc registries data for the specified corps into our in-mem cache
+    # load all corporations canada data for the specified corps into our in-mem cache
     def cache_corpscanada_code_tables(self, generate_individual_sql=False):
         if self.use_local_cache():
             print('Caching data for code tables ...')
@@ -658,7 +658,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -669,7 +669,7 @@ class CorporationsCanada:
     # returns a zero-length array if none found
     # optionally takes a WHERE clause and ORDER BY clause (must be valid SQL)
     def get_corpscanada_table(self, table, where="", orderby="", cache=False, generate_individual_sql=False):
-        sql = "SELECT * FROM " + BC_REGISTRIES_TABLE_PREFIX + table
+        sql = "SELECT * FROM " + CORPORATIONS_CANADA_TABLE_PREFIX + table
         if 0 < len(where):
             sql = sql + " WHERE " + where
         if 0 < len(orderby):
@@ -696,7 +696,7 @@ class CorporationsCanada:
         try:
             # create a cursor
             cur = self.conn.cursor()
-            cur.execute("""SELECT max(event_id) FROM """ + BC_REGISTRIES_TABLE_PREFIX + """event where event_timestmp = %s""", (event_date,))
+            cur.execute("""SELECT max(event_id) FROM """ + CORPORATIONS_CANADA_TABLE_PREFIX + """event where event_timestmp = %s""", (event_date,))
             row = cur.fetchone()
             cur.close()
             cur = None
@@ -704,7 +704,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cur is not None:
@@ -716,7 +716,7 @@ class CorporationsCanada:
         try:
             # create a cursor
             cur = self.conn.cursor()
-            cur.execute("""SELECT max(event_timestmp) FROM """ + BC_REGISTRIES_TABLE_PREFIX + """event""")
+            cur.execute("""SELECT max(event_timestmp) FROM """ + CORPORATIONS_CANADA_TABLE_PREFIX + """event""")
             row = cur.fetchone()
             cur.close()
             cur = None
@@ -724,7 +724,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cur is not None:
@@ -736,7 +736,7 @@ class CorporationsCanada:
         try:
             # create a cursor
             cur = self.conn.cursor()
-            cur.execute("""SELECT event_timestmp FROM """ + BC_REGISTRIES_TABLE_PREFIX + """event where event_id = %s""", (event_id,))
+            cur.execute("""SELECT event_timestmp FROM """ + CORPORATIONS_CANADA_TABLE_PREFIX + """event where event_id = %s""", (event_id,))
             row = cur.fetchone()
             cur.close()
             cur = None
@@ -744,7 +744,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cur is not None:
@@ -752,11 +752,11 @@ class CorporationsCanada:
 
     # return a specific set of corporations, based on an event range
     def get_specific_corps(self, corp_filter):
-        sql = """SELECT distinct(corp_num) from """ + BC_REGISTRIES_TABLE_PREFIX + """event
+        sql = """SELECT distinct(corp_num) from """ + CORPORATIONS_CANADA_TABLE_PREFIX + """event
                 where corp_num in ({})
                 order by corp_num;"""
-        sql2 = """SELECT distinct(corp.corp_num) from """ + BC_REGISTRIES_TABLE_PREFIX + """corporation corp,
-                            """ + BC_REGISTRIES_TABLE_PREFIX + """corp_party party
+        sql2 = """SELECT distinct(corp.corp_num) from """ + CORPORATIONS_CANADA_TABLE_PREFIX + """corporation corp,
+                            """ + CORPORATIONS_CANADA_TABLE_PREFIX + """corp_party party
                          where corp.corp_typ_cd in ('SP','MF')
                           and corp.corp_num = party.corp_num
                           and party.party_typ_cd in ('FBO')
@@ -801,7 +801,7 @@ class CorporationsCanada:
         sqls = []
 
         # select *all* corps - we will filter in the next stage
-        sqls.append("""SELECT distinct(corp.corp_num) from """ + BC_REGISTRIES_TABLE_PREFIX + """corporation corp """)
+        sqls.append("""SELECT distinct(corp.corp_num) from """ + CORPORATIONS_CANADA_TABLE_PREFIX + """corporation corp """)
 
         corps = []
         for sql in sqls:
@@ -834,7 +834,7 @@ class CorporationsCanada:
         sqls = []
 
         # select *all* corps - we will filter in the next stage
-        sqls.append("""SELECT corp_num, event_id from """ + BC_REGISTRIES_TABLE_PREFIX + """event
+        sqls.append("""SELECT corp_num, event_id from """ + CORPORATIONS_CANADA_TABLE_PREFIX + """event
                         where event_timestmp >= %s""")
 
         corps = []
@@ -865,7 +865,7 @@ class CorporationsCanada:
                     cur.close()
 
         # since the event may affect more than one corp, check corp_state to see if there are any other corps to bring into scope
-        sql = """SELECT corp_num from """ + BC_REGISTRIES_TABLE_PREFIX + """corp_state
+        sql = """SELECT corp_num from """ + CORPORATIONS_CANADA_TABLE_PREFIX + """corp_state
                 where start_event_id = %s or end_event_id = %s"""
         for event_id in event_ids:
             cur = None
@@ -926,7 +926,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1015,7 +1015,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1048,7 +1048,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1081,7 +1081,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1153,7 +1153,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1260,7 +1260,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cur is not None:
@@ -1287,7 +1287,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1330,7 +1330,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1382,7 +1382,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1490,7 +1490,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading corp info from DB: " + str(error))
+            log_error("CorporationsCanada exception reading corp info from DB: " + str(error))
             raise
         finally:
             if cur is not None:
@@ -1501,7 +1501,7 @@ class CorporationsCanada:
     # primary method to load all bc registries data for the specified corporation
     ###########################################################################
 
-    def get_bc_reg_corp_info(self, corp_num):
+    def get_corpscanada_corp_info(self, corp_num):
         sql_party = """SELECT corp_num, corp_party_id, mailing_addr_id, delivery_addr_id, party_typ_cd, start_event_id, end_event_id, cessation_dt,
                          last_nme, middle_nme, first_nme, business_nme, bus_company_num, email_address, corp_party_seq_num, office_notification_dt,
                          phone, reason_typ_cd
@@ -1566,7 +1566,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading corp party info from DB: " + str(error))
+            log_error("CorporationsCanada exception reading corp party info from DB: " + str(error))
             raise
         finally:
             if cur is not None:
