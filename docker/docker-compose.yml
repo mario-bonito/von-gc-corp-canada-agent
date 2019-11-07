@@ -72,10 +72,10 @@ services:
       - PROJECT_NAME=${PROJECT_NAME:-von-local-developer-agent}
       - FRIENDLY_PROJECT_NAME=${FRIENDLY_PROJECT_NAME:-Local Developer Data Pipeline}
       - VONX_API_URL=${VONX_API_URL:-http://corpscanada-agent:8000/corpscanada}
-      # [gc_registries]
+      # [corpscanada]
       - CORPSCANADA_DB_HOST=${CORPSCANADA_DB_HOST:-host.docker.internal}
       - CORPSCANADA_DB_PORT=${CORPSCANADA_DB_PORT:-5454}
-      - CORPSCANADA_DB_DATABASE=${CORPSCANADA_DB_DATABASE:-CORPORATION_CANADA}
+      - CORPSCANADA_DB_DATABASE=${CORPSCANADA_DB_DATABASE:-CORPORATIONS_CANADA}
       - CORPSCANADA_DB_USER=${CORPSCANADA_DB_USER}
       - CORPSCANADA_DB_PASSWORD=${CORPSCANADA_DB_PASSWORD}
       # [event_processor]

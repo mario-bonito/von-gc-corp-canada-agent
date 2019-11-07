@@ -47,17 +47,17 @@ REPORT_COUNT = 10000
 ERROR_THRESHOLD_COUNT = 5
 
 corpscanada_count = 0
-with BCRegistries() as corpscanadaistries:
+with CorporationsCanada() as corporationscanada:
     # run this query against BC Reg database:
     sql1 = """
     select corp.corp_num, corp.corp_typ_cd
-    from corpscanadaistries.corporation corp
+    from corporationscanada.corporation corp
     where corp.corp_num not in (
-        select corp_num from corpscanadaistries.corp_state where state_typ_cd = 'HWT');
+        select corp_num from corporationscanada.corp_state where state_typ_cd = 'HWT');
     """
 
     print("Get corp stats from BC Registries DB", datetime.datetime.now())
-    corpscanada_recs = corpscanadaistries.get_corpscanada_sql("corp_stats", sql1, cache=False)
+    corpscanada_recs = corporationscanada.get_corpscanada_sql("corp_stats", sql1, cache=False)
     for corpscanada_rec in corpscanada_recs:
         if corpscanada_rec['corp_typ_cd'] in CORP_TYPES_IN_SCOPE:
             corpscanada_count = corpscanada_count + 1

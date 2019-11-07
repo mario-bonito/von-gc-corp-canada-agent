@@ -7,10 +7,10 @@ services:
     image: maraapp
     environment:
       - VONX_API_URL=${VONX_API_URL:-http://corpscanada-agent:8000/corpscanada}
-      # [corpscanadaistries]
+      # [corporationscanada]
       - CORPSCANADA_DB_HOST=${CORPSCANADA_DB_HOST:-host.docker.internal}
       - CORPSCANADA_DB_PORT=${CORPSCANADA_DB_PORT:-5454}
-      - CORPSCANADA_DB_DATABASE=${CORPSCANADA_DB_DATABASE:-CORPSCANADAISTRIES}
+      - CORPSCANADA_DB_DATABASE=${CORPSCANADA_DB_DATABASE:-CORPORATIONS_CANADA}
       - CORPSCANADA_DB_USER=${CORPSCANADA_DB_USER}
       - CORPSCANADA_DB_PASSWORD=${CORPSCANADA_DB_PASSWORD}
       # [event_processor]
