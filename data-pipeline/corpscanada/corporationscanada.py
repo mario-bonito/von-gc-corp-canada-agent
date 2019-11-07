@@ -282,7 +282,7 @@ class CorporationsCanada:
         except (Exception) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cache_cursor is not None:
@@ -476,7 +476,7 @@ class CorporationsCanada:
         except (Exception) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -789,7 +789,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cur is not None:
@@ -822,7 +822,7 @@ class CorporationsCanada:
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
                 print(traceback.print_exc())
-                log_error("BCRegistries exception reading DB: " + str(error))
+                log_error("CorporationsCanada exception reading DB: " + str(error))
                 raise
             finally:
                 if cur is not None:
@@ -858,7 +858,7 @@ class CorporationsCanada:
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
                 print(traceback.print_exc())
-                log_error("BCRegistries exception reading DB: " + str(error))
+                log_error("CorporationsCanada exception reading DB: " + str(error))
                 raise
             finally:
                 if cur is not None:
@@ -883,7 +883,7 @@ class CorporationsCanada:
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
                 print(traceback.print_exc())
-                log_error("BCRegistries exception reading DB: " + str(error))
+                log_error("CorporationsCanada exception reading DB: " + str(error))
                 raise
             finally:
                 if cur is not None:
@@ -1201,7 +1201,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
@@ -1356,7 +1356,7 @@ class CorporationsCanada:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             print(traceback.print_exc())
-            log_error("BCRegistries exception reading DB: " + str(error))
+            log_error("CorporationsCanada exception reading DB: " + str(error))
             raise
         finally:
             if cursor is not None:
