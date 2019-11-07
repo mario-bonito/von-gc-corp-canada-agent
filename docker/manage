@@ -96,7 +96,7 @@ configureEnvironment () {
   export POSTGRESQL_PASSWORD="DB_PASSWORD"
   export WALLET_TYPE="postgres_storage"
   export WALLET_ENCRYPTION_KEY="key"
-  export POSTGRESQL_WALLET_HOST="bc-wallet-db"
+  export POSTGRESQL_WALLET_HOST="corpscanada-wallet-db"
   export POSTGRESQL_WALLET_PORT="5432"
   export POSTGRESQL_ADMIN_USER="postgres"
   export POSTGRESQL_ADMIN_PASSWORD="mysecretpassword"
@@ -162,7 +162,7 @@ case "$COMMAND" in
   start|up)
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
-    docker-compose up -d ${_startupParams} 
+    docker-compose up -d ${_startupParams}
     docker-compose logs -f
     ;;
   logs)
@@ -171,7 +171,7 @@ case "$COMMAND" in
     ;;
   stop)
     configureEnvironment $@
-    docker-compose stop 
+    docker-compose stop
     ;;
   startdb)
     configureEnvironment $@

@@ -13,16 +13,16 @@ from corpscanada.rocketchat_hooks import log_error, log_warning, log_info
 
 
 corp_credential = 'REG'
-corp_schema = 'registration.registries.ca'
-corp_version = '1.0.42'
+corp_schema = 'registration.corpscanada.ca'
+corp_version = '1.0.0'
 
 addr_credential = 'ADDR'
-addr_schema = 'address.registries.ca'
-addr_version = '1.0.42'
+addr_schema = 'address.corpscanada.ca'
+addr_version = '1.0.0'
 
 dba_credential = 'REL'
-dba_schema = 'relationship.registries.ca'
-dba_version = '1.0.42'
+dba_schema = 'relationship.corpscanada.ca'
+dba_version = '1.0.0'
 
 CORP_BATCH_SIZE = 3000
 FALLBACK_CORP_BATCH_SIZE = 300
@@ -32,7 +32,7 @@ MIN_VALID_DATE = datetime.datetime(datetime.MINYEAR+10, 1, 1)
 MAX_END_DATE   = datetime.datetime(datetime.MAXYEAR-1, 12, 31)
 
 # for now, we are in PST time
-timezone = pytz.timezone("PST8PDT")
+timezone = pytz.timezone("America/Toronto")
 
 MIN_START_DATE_TZ = timezone.localize(MIN_START_DATE)
 MIN_VALID_DATE_TZ = timezone.localize(MIN_VALID_DATE)
